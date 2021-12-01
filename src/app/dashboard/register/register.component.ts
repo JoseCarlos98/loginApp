@@ -29,7 +29,7 @@ export class RegisterComponent implements OnInit {
 
   form: FormGroup = this.fb.group({
     branchId : ['', Validators.required],
-    newBranchId : ['', Validators.required],
+    newBranchId : [''],
     name     : ['Prueba 1', Validators.required],
   })
 
