@@ -1,0 +1,19 @@
+<div class="container-fluid c-login">
+    <div class="c-main">
+        <img src="/assets/img/logo-original-copy.png" alt="">
+     
+        <form [formGroup]="form" (ngSubmit)="logIn()">
+            <div class="c-input">
+                <img src="/assets/img/icon-users.png" alt="">
+                <input type="text" formControlName="username" placeholder="user@adroitoverseas.net">
+            </div>
+            <div class="c-input">
+                <img src="/assets/img/candado.png" alt="">
+                <input type="password" formControlName="password" placeholder="Password">
+            </div>
+            <button type="submit" [disabled]="form.invalid">Log in</button>
+            <span>Forgot password?</span>
+        </form>
+
+    </div>
+</div>

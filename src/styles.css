@@ -1,0 +1,137 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    
+}
+
+.c-login{
+    height: 100vh;
+    background: #172233;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+.c-login::before{
+    content: '';
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: radial-gradient(circle, rgba(98, 156, 196, 0.25), rgba(32, 45, 66, 0.51));
+}
+
+.c-main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 366px;
+    z-index: 1;
+    height: 500px;
+}
+
+.c-main > img{
+    width: 203px;
+    height: 161px;
+}
+
+.c-main form {
+    padding: 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.c-main form > div > img{
+    width: 15px;
+    height: 20px;
+    margin: 0 10px 0 20px;
+}
+
+
+.c-input{
+    width: 100%;
+    border-bottom: 1px solid white;
+    margin-top:36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.c-input input{
+    background: none;
+    width: 100%;
+    border: none;
+    user-select: none;
+    outline: none;
+    color: white;
+    height: 40px;
+    font-family: 'Sarabun', sans-serif;
+}
+
+::placeholder{
+    font-size: 16px;
+    color: #ffff;
+    font-weight: 500;
+    font-family: 'Sarabun', sans-serif;
+}
+
+.c-main form button {
+    width: 100%;
+    height: 36px;
+    margin: 23px 1px 15px 0;
+    border-radius: 2px;
+    border: none;
+    background-color: #fff;
+}
+.c-main form span {
+    font-family: Sarabun;
+    font-size: 14px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #fff;
+}
+input:-webkit-autofill{
+    transition: all 5000s ease-in-out 0s;
+    transition-property: background-color, color;
+}
+/* 
+.fix-header .page-wrapper{
+    height: 100vh;
+} */
+
+.info-header{
+    display: flex;
+    justify-content: space-between;
+    width: 180px
+}
+
+.info-header h4{
+    margin: 0;
+}
+
+
+.mat-form-field-appearance-fill .mat-form-field-flex{
+    background: none!important;
+  }
+  
+  .icons{
+    font-size: 30px;
+}
+
+.mat-select-panel:not([class*=mat-elevation-z]){
+    z-index: 10!important;
+}
+
+.modal-backdrop.show{
+    z-index: 0;
+    
+}
+
+.modal-open .modal{
+    z-index: 1;
+}
