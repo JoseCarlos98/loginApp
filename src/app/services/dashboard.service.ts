@@ -2,10 +2,11 @@ import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { Injectable} from '@angular/core';
 import { environment } from '../../environments/environment';
 import { catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { AuthService } from 'src/app/services/auth-services.service';
 import { UserAuthenticate } from '../interfaces/user.interface';
-
+import { Origin } from '../interfaces/origin.interface';
+import { map } from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +36,6 @@ export class DashboardService {
 
   getOrigins(){
     const url = `${this.apiBase}Origins?filter[include]=branch&access_token=${this.infoUser.id}`;
-    console.log(url);
     return this.http.get(url)
     .pipe(
       catchError(err =>  of(err.error.error.message))
@@ -54,6 +54,12 @@ export class DashboardService {
   updateOrigins(body:object, id:string){
     const url = `${this.apiBase}Origins/${id}?access_token=${this.infoUser.id}`;
     return this.http.put(url, body);
+  }
+
+
+  getSuggestion(termino:string):Observable<Origin[]>{
+    const query = `${this.apiBase}Origins?filter={"where":{"name":{"like":"${termino}","options":"i"}}}&access_token=${this.infoUser.id}`
+    return this.http.get<Origin[]>(query)
   }
 
 }

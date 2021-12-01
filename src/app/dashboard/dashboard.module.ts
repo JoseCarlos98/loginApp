@@ -6,7 +6,7 @@ import { DashboardComponent } from './dashboard.component';
 import { SharedModule } from '../shared/shared.module';
 import { RegisterComponent } from './register/register.component';
 import { MaterialModule } from '../material/material.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DateFormatPipe } from './pipe/date-format.pipe';
 import { BranchPipe } from './pipe/branch.pipe';
 import { SearcherComponent } from './searcher/searcher.component';
@@ -27,6 +27,7 @@ import { SearcherComponent } from './searcher/searcher.component';
     SharedModule,
     MaterialModule,
     ReactiveFormsModule,
+    FormsModule
 
   ]
 })

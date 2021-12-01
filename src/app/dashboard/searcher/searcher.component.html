@@ -1,1 +1,14 @@
-<p>searcher works!</p>
+<mat-form-field class="example-full-width" appearance="fill" style="width: 500px;">
+    <h3>Origin</h3>
+    <input type="text" placeholder="..."  matInput [(ngModel)]="termino" (input)="searching()" [matAutocomplete]="auto">
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+        <mat-option *ngFor="let option of suggestions" [value]="option.id">
+          {{option.name}}
+        </mat-option>
+
+        <mat-option value="" *ngIf="suggestions.length === 0 && termino.trim().length > 0" >
+          <h3 class="form-text text-danger">No se encontro el origin con el termino <span style="color: black; font-family: 600;">{{termino}}</span></h3>
+        </mat-option>
+      </mat-autocomplete>
+</mat-form-field>
+
