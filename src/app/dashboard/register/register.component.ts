@@ -3,10 +3,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserAuthenticate } from 'src/app/interfaces/user.interface';
 import { AuthService } from 'src/app/services/auth-services.service';
 import { DashboardService } from '../../services/dashboard.service';
-import { Branch, Origin } from '../../interfaces/branch.interface';
+import { Branch } from '../../interfaces/branch.interface';
 import { Router } from '@angular/router';
 import * as moment from 'moment'; 
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { Origin } from 'src/app/interfaces/origin.interface';
 
 
 @Component({
@@ -20,46 +21,41 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 export class RegisterComponent implements OnInit {
 
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-
   infoUser!: UserAuthenticate;
   body: object = {};
   branchSelected!: Branch;
   branchs: Branch[] = [];
   origins : Origin[] = [];
 
-  fecha : any
-
   form: FormGroup = this.fb.group({
     branchId : ['', Validators.required],
-    branchId2 : [''],
+    newBranchId : ['', Validators.required],
     name     : ['Prueba 1', Validators.required],
   })
 
   constructor(private authService: AuthService,
               private fb: FormBuilder,
-              private dashboardService: DashboardService,
-              private router:Router) { }
+              private dashboardService: DashboardService) { }
 
   ngOnInit(): void {
     this.infoUser = this.authService.infoUser;
-    
     this.getBranches();
     this.getAllOrigins()
+  }
+
+  validate(campo:string){
+    return this.form.controls[campo].errors && this.form.controls[campo].touched 
   }
 
   getBranches(){
     this.dashboardService.getBranches()
         .subscribe(branchs => {
           this.branchs = branchs;
-          // console.log(branchs);
-          
         })
   }
 
   register(){
     const { name, branchId } = this.form.value;
-
     this.body = {
       branchId : branchId,
       createdById: this.infoUser.user.id,
@@ -67,8 +63,6 @@ export class RegisterComponent implements OnInit {
     }
     this.dashboardService.registerOrigin(this.body)
         .subscribe(resp=> {
-          console.log(resp);
-          
           this.getAllOrigins();
         })
   }
@@ -76,8 +70,8 @@ export class RegisterComponent implements OnInit {
   getAllOrigins(){
     this.dashboardService.getOrigins()
     .subscribe(origins => {
-      // this.origins = origins;
-      console.log(this.origins);
+      this.origins = origins;
+      console.log(origins);
       
     })
   }
@@ -86,16 +80,13 @@ export class RegisterComponent implements OnInit {
     this.form.reset();
   }
 
-  deleteBranch(branch:Branch){
+  deleteOrigin(branch:Branch){
     this.branchSelected = branch;
-    
   }
   
-  updateBranch(branch:Branch){
+  updateOrigin(branch:Branch){
     this.branchSelected = branch;
     this.form.reset(this.branchSelected);
-
-    console.log(branch);
   }
 
   delete(){
@@ -106,10 +97,10 @@ export class RegisterComponent implements OnInit {
   }
 
   update(){
-    const { name, branchId } = this.form.value;
-
+    const { name, newBranchId } = this.form.value;
+    
     this.body = {
-      branchId : branchId,
+      branchId : newBranchId,
       createdById: this.infoUser.user.id,
       name
     }

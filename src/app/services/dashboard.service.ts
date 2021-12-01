@@ -34,18 +34,8 @@ export class DashboardService {
   }
 
   getOrigins(){
-
-
-    // const url = `${this.apiBase}Origins?filter[include]=branches`;
-    // const header  = {
-    //   'access_token=': this.infoUser.id
-    // }
-
-  //   let headers = new HttpHeaders({
-  //     'access_token=':  Cthis.infoUser.id
-  // });
-    const url = `${this.apiBase}Origins?filter[include]=branches&access_token=${this.infoUser.id}`;
-    
+    const url = `${this.apiBase}Origins?filter[include]=branch&access_token=${this.infoUser.id}`;
+    console.log(url);
     return this.http.get(url)
     .pipe(
       catchError(err =>  of(err.error.error.message))

@@ -1,9 +1,4 @@
-export interface Branch {
-    name:     string;
-    nickname?: string;
-    color?:    string;
-    id?:       string;
-}
+
 
 export interface Origin {
     branchId:    string;
@@ -11,5 +6,12 @@ export interface Origin {
     createdAt:   Date;
     name:        string;
     id:          string;
+    branch?:      Branch;
 }
 
+export interface Branch {
+    name:     string;
+    nickname: string;
+    color:    string;
+    id:       string;
+}

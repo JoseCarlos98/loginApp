@@ -84,6 +84,7 @@
     border-radius: 2px;
     border: none;
     background-color: #fff;
+    font-weight: 700;
 }
 .c-main form span {
     font-family: Sarabun;
@@ -134,4 +135,8 @@ input:-webkit-autofill{
 
 .modal-open .modal{
     z-index: 1;
+}
+
+.modal.show .modal-dialog{
+    top: 30%!important;
 }

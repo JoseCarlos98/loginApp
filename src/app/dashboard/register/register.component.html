@@ -9,6 +9,9 @@
         <mat-form-field style="margin-right: 30px;" appearance="fill">
               <mat-label>Name</mat-label>
               <input matInput type="text" formControlName="name">
+              <span class="form-text text-danger" *ngIf="validate('name')">
+                Ingrese un nombre
+              </span>
           </mat-form-field>
           <mat-form-field appearance="fill">
             <mat-label>Branch </mat-label>
@@ -16,10 +19,14 @@
               <mat-option *ngFor="let branch of branchs" [value]="branch.id" >
                 {{branch.name}}
               </mat-option>
+            
             </mat-select>
+            <span class="form-text text-danger" *ngIf="validate('branchId')">
+              Seleccióna una branch
+            </span>
           </mat-form-field>
        
-      <button mat-raised-button class="ml-5" type="submit" [disabled]="form.invalid">GUARDAR</button>
+      <button mat-raised-button class="ml-5" type="submit" >GUARDAR</button>
       <br><br><br><br>
     </form>
     </div>
@@ -39,16 +46,15 @@
     <tbody >
       <tr *ngFor="let origin of origins">
         <td>{{origin.name}}</td>
-        <th>{{origin.branchId}}</th>
+        <th >{{origin.branch ? origin.branch.name : ''}}</th>
         <td>{{origin.createdAt | dateFormat}}</td>
-        <td><i class="bi bi-pencil-square icons" data-bs-toggle="modal" data-bs-target="#staticBackdrop1" (click)="updateBranch(origin)"></i></td>
-        <td><i class="bi bi-trash-fill icons"  data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="deleteBranch(origin)"></i></td>
+        <td><i class="bi bi-pencil-square icons" data-bs-toggle="modal" data-bs-target="#staticBackdrop1" (click)="updateOrigin(origin)"></i></td>
+        <td><i class="bi bi-trash-fill icons"  data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="deleteOrigin(origin)"></i></td>
       </tr>
       <tr>
     </tbody>
   </table>
 </div>
-<br><br><br><br>
 </div>
 
 
@@ -90,18 +96,20 @@
           </mat-form-field>
           <mat-form-field appearance="fill" style="z-index: 1;">
             <mat-label>Branch </mat-label>
-            <mat-select formControlName="branchId2">
+            <mat-select formControlName="newBranchId">
               <mat-option *ngFor="let branch of branchs" [value]="branch.id" >
                 {{branch.name}}
               </mat-option>
             </mat-select>
+            <span class="form-text text-danger" *ngIf="validate('newBranchId')">
+              Seleccióna una branch
+            </span>
           </mat-form-field>
-       
         </form>
       </div>
       <div class="modal-footer">
       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="reset()">CERRAR</button>
-      <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="update()">ACTUALIZAR</button>
+      <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="update()" [disabled]="form.invalid">ACTUALIZAR</button>
     </div>
   </div>
 </div>
