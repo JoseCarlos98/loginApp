@@ -20,7 +20,8 @@ export class RegisterComponent implements OnInit {
 
   infoUser!: UserAuthenticate;
   body: object = {};
-  branchSelected!: Branch;
+  branchSelected:any
+  // branchSelected: Branch = '';
   branchs: Branch[] = [];
   origins : Origin[] = [];
   optionSelected: Origin[] = []
@@ -64,6 +65,7 @@ export class RegisterComponent implements OnInit {
 
   register(){
     const { name, branchId } = this.form.value;
+    let idOrigin = '';
 
     this.body = {
       branchId : branchId,
@@ -71,11 +73,24 @@ export class RegisterComponent implements OnInit {
       name
     };
 
-    this.dashboardService.registerOrigin(this.body)
+    if (this.branchSelected) {
+      idOrigin = this.branchSelected.id
+    }
+    
+    this.dashboardService.registerOrigin(this.body, idOrigin)
         .subscribe(resp=> {
           this.getAllOrigins();
           this.reset();
         })
+        this.branchSelected.id = ''
+  }
+
+   // Funcion para el boton eliminar y obtenga la informaciòn al actualizar
+   rowSelected(branch:Branch, option?:string){
+    this.branchSelected = branch;
+    if (option) {
+      this.form.reset(branch);
+    }
   }
 
   getAllOrigins(){
@@ -88,13 +103,7 @@ export class RegisterComponent implements OnInit {
     this.form.reset();
   }
 
-  // Funcion para el boton eliminar y obtenga la informaciòn al actualizar
-  rowSelected(branch:Branch, option?:string){
-    this.branchSelected = branch;
-    if (option) {
-      this.form.reset(branch);
-    }
-  }
+ 
 
   delete(){
     this.dashboardService.deleteOrigins(this.branchSelected.id!)
@@ -103,20 +112,6 @@ export class RegisterComponent implements OnInit {
         });
   }
 
-  update(){
-    const { name, branchId } = this.form.value;
 
-    this.body = {
-      branchId : branchId,
-      createdById: this.infoUser.user.id,
-      name
-    };
-
-    this.dashboardService.updateOrigins(this.body, this.branchSelected.id!)
-        .subscribe(resp =>{
-          this.reset();
-          this.getAllOrigins();
-        });
-  }
 
 }

@@ -26,9 +26,17 @@ export class DashboardService {
           .pipe(catchError(err =>  of(err.error.error.message)))
   }
 
-  registerOrigin(body: object){
-    const url = `${this.apiBase}Origins?access_token=${this.infoUser.id}`;
-    return this.http.post(url, body);
+  registerOrigin(body?: object, idOrigin?:any){
+    console.log(body);
+    console.log(idOrigin);
+    
+    if (idOrigin) {
+      const url = `${this.apiBase}Origins/${idOrigin}?access_token=${this.infoUser.id}`;
+      return this.http.put(url, body);
+    }else{
+      const url = `${this.apiBase}Origins?access_token=${this.infoUser.id}`;
+      return this.http.post(url, body);
+    }
   }
 
   getOrigins(){
