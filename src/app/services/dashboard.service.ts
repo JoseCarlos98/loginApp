@@ -6,7 +6,6 @@ import { Observable, of } from 'rxjs';
 import { AuthService } from 'src/app/services/auth-services.service';
 import { UserAuthenticate } from '../interfaces/user.interface';
 import { Origin } from '../interfaces/origin.interface';
-import { map } from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -27,9 +26,6 @@ export class DashboardService {
   }
 
   registerOrigin(body?: object, idOrigin?:any){
-    console.log(body);
-    console.log(idOrigin);
-    
     if (idOrigin) {
       const url = `${this.apiBase}Origins/${idOrigin}?access_token=${this.infoUser.id}`;
       return this.http.put(url, body);
@@ -43,7 +39,7 @@ export class DashboardService {
     const url = `${this.apiBase}Origins?filter[include]=branch&access_token=${this.infoUser.id}`;
     return this.http.get(url)
     .pipe(catchError(err =>  of(err.error.error.message)))
-    }
+  }
     
    
     deleteOrigins(id:string){
@@ -59,7 +55,6 @@ export class DashboardService {
 
 
   getSuggestion(termino:string):Observable<Origin[]>{
-    // const query = `${this.apiBase}Origins?filter={"include":{"branch"}"where":{"name":{"like":"${termino}","options":"i"}}}&access_token=${this.infoUser.id}`
   const query = `${this.apiBase}Origins?filter={"where":{"name":{"like":"${termino}","options":"i"}}}&access_token=${this.infoUser.id}`
     return this.http.get<Origin[]>(query)
   }

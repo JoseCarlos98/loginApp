@@ -13,15 +13,11 @@ import { Origin } from 'src/app/interfaces/origin.interface';
   styleUrls: ['./register.component.css']
 })
 
-
-
-
 export class RegisterComponent implements OnInit {
 
   infoUser!: UserAuthenticate;
   body: object = {};
   branchSelected:any
-  // branchSelected: Branch = '';
   branchs: Branch[] = [];
   origins : Origin[] = [];
   optionSelected: Origin[] = []
@@ -58,12 +54,10 @@ export class RegisterComponent implements OnInit {
 
   getBranches(){
     this.dashboardService.getBranches()
-        .subscribe(branchs => {
-          this.branchs = branchs;
-        })
+        .subscribe(branchs => { this.branchs = branchs })
   }
 
-  register(){
+  registerOrUpdate(){
     const { name, branchId } = this.form.value;
     let idOrigin = '';
 
@@ -103,13 +97,9 @@ export class RegisterComponent implements OnInit {
     this.form.reset();
   }
 
- 
-
   delete(){
     this.dashboardService.deleteOrigins(this.branchSelected.id!)
-        .subscribe(resp => {
-          this.getAllOrigins();
-        });
+        .subscribe(resp => { this.getAllOrigins()});
   }
 
 
