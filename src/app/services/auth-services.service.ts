@@ -35,10 +35,10 @@ export class AuthService {
   validateToken(){
     const userAdroit = localStorage.getItem('userAdroit') || '';
     if (userAdroit) {
-      this.user = JSON.parse(userAdroit)
-      return of (true)
+      this.user = JSON.parse(userAdroit);
+      return of (true);
     }else{
-      return of (false)
+      return of (false);
     }
   }
 

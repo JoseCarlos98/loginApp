@@ -15,18 +15,15 @@ export class DashboardService {
   apiBase: string = environment.apiBase;
   infoUser:UserAuthenticate
 
-  constructor(private http: HttpClient,
-              private authService: AuthService) {
+  constructor(private http: HttpClient, private authService: AuthService) {
                 this.infoUser = this.authService.infoUser;
-               }
+}
 
   getBranches(){
     const url = `${this.apiBase}Branches?access_token=${this.infoUser.id}`;
 
     return this.http.get(url)
-          .pipe(
-            catchError(err =>  of(err.error.error.message))
-          )
+          .pipe(catchError(err =>  of(err.error.error.message)))
   }
 
   registerOrigin(body: object){
@@ -37,18 +34,14 @@ export class DashboardService {
   getOrigins(){
     const url = `${this.apiBase}Origins?filter[include]=branch&access_token=${this.infoUser.id}`;
     return this.http.get(url)
-    .pipe(
-      catchError(err =>  of(err.error.error.message))
-      )
+    .pipe(catchError(err =>  of(err.error.error.message)))
     }
     
    
     deleteOrigins(id:string){
     const url = `${this.apiBase}Origins/${id}?access_token=${this.infoUser.id}`;
     return this.http.delete(url)
-    .pipe(
-      catchError(err =>  of(err.error.error.message))
-      )
+    .pipe(catchError(err =>  of(err.error.error.message))      )
   }
 
   updateOrigins(body:object, id:string){
@@ -58,7 +51,8 @@ export class DashboardService {
 
 
   getSuggestion(termino:string):Observable<Origin[]>{
-    const query = `${this.apiBase}Origins?filter={"where":{"name":{"like":"${termino}","options":"i"}}}&access_token=${this.infoUser.id}`
+    // const query = `${this.apiBase}Origins?filter={"include":{"branch"}"where":{"name":{"like":"${termino}","options":"i"}}}&access_token=${this.infoUser.id}`
+  const query = `${this.apiBase}Origins?filter={"where":{"name":{"like":"${termino}","options":"i"}}}&access_token=${this.infoUser.id}`
     return this.http.get<Origin[]>(query)
   }
 

@@ -8,7 +8,7 @@ const routes: Routes = [
     path:'', 
     component: DashboardComponent,
     children:[
-      {path: 'register', component: RegisterComponent},
+      {path: '', component: RegisterComponent},
       {path: '**', redirectTo: ''}
     ]
   },

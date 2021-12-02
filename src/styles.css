@@ -23,6 +23,10 @@
     background: radial-gradient(circle, rgba(98, 156, 196, 0.25), rgba(32, 45, 66, 0.51));
 }
 
+.topbar .profile-pic{
+    margin-left: 15px;
+}
+
 .c-main{
     display: flex;
     flex-direction: column;
@@ -121,7 +125,7 @@ input:-webkit-autofill{
   }
   
   .icons{
-    font-size: 30px;
+    font-size: 20px;
 }
 
 .mat-select-panel:not([class*=mat-elevation-z]){
@@ -138,5 +142,10 @@ input:-webkit-autofill{
 }
 
 .modal.show .modal-dialog{
-    top: 30%!important;
+    top: 14%!important;
+    left: -4%;
+}
+
+.modal-content{
+    width: 600px;
 }
