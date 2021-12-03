@@ -9,8 +9,10 @@ import { AuthService } from '../../services/auth-services.service';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(private authServices: AuthService,
-              private router: Router) { }
+  constructor(
+    private authServices: AuthService,
+    private router: Router
+  ) { }
 
   infoUser: any;
 

@@ -2,7 +2,7 @@
     <div class="c-main">
         <img src="/assets/img/logo-original-copy.png" alt="">
      
-        <form [formGroup]="form" (ngSubmit)="logIn()">
+        <form [formGroup]="form" (ngSubmit)="logIn()"  autocomplete="off">
             <div class="c-input">
                 <img src="/assets/img/icon-users.png" alt="">
                 <input type="text" formControlName="username" placeholder="user@adroitoverseas.net">

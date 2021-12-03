@@ -13,3 +13,7 @@ export interface Origin {
     id:          string;
 }
 
+export interface Query {
+    name:        string;
+}
+

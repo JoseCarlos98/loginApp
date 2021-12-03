@@ -30,14 +30,16 @@
     </form>
     </div>
 </div>
+
+
 <div class="search">
-  <app-searcher (optionSelected)="option( $event )"></app-searcher>
+  <app-searcher  (onDebounce)="sugerencia( $event )"></app-searcher>
 </div>
 <hr>
 
 <div class="row">
   <div class="col-md-12 overflow-auto">
-  <table class="table table-striped table-hover">
+  <table class="table table-striped table-hover" data-sort-name="optionSelected" data-sort-order="desc">
     <thead>
       <tr>
         <th scope="col">Nombre</th>
@@ -46,12 +48,12 @@
       </tr>
     </thead>
     <tbody >
-      <tr *ngFor="let origin of (optionSelected.length > 0 ? optionSelected : origins)">
+      <tr *ngFor="let origin of (optionSelected.length > 0 ? optionSelected : origins )">
         <td>{{origin.name}}</td>
         <th >{{origin.branch ? origin.branch.name : ''}}</th>
         <td>{{origin.createdAt | dateFormat}}</td>
-        <td><i class="bi bi-pencil-square icons" data-bs-toggle="modal" data-bs-target="#staticBackdrop1" (click)="rowSelected(origin, 'update')"></i></td>
-        <td><i class="bi bi-trash-fill icons"  data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="rowSelected(origin)"></i></td>
+        <td><i class="bi bi-pencil-square icons" data-bs-toggle="modal" data-bs-target="#staticBackdrop1" (click)="editRow(origin, 'update')"></i></td>
+        <td><i class="bi bi-trash-fill icons"  data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="editRow(origin)"></i></td>
       </tr>
       <tr>
     </tbody>
@@ -109,7 +111,7 @@
           </mat-form-field>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="reset()">CERRAR</button>
-            <button mat-raised-button class="ml-5" type="button" data-bs-dismiss="modal" [disabled]="form.invalid">GUARDAR</button>
+            <button mat-raised-button class="ml-5" type="submit" data-bs-dismiss="modal" [disabled]="form.invalid">GUARDAR</button>
         </div>
         </form>
       </div>

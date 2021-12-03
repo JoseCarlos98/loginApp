@@ -1,4 +1,4 @@
-<mat-form-field class="example-full-width" appearance="fill" style="width: 500px;">
+<!-- <mat-form-field class="example-full-width" appearance="fill" style="width: 500px;">
     <h3>Buscar origin</h3>
     <input type="text" placeholder="..."  matInput [(ngModel)]="termino" (input)="searching()" [matAutocomplete]="auto">
       <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
@@ -9,5 +9,10 @@
         <mat-option value="" *ngIf="suggestions.length === 0 && termino.trim().length > 0" >
           <h3 class="form-text text-danger">No se encontro el origin con el termino <span style="color: black; font-family: 600;">{{termino}}</span></h3>
         </mat-option>
+
       </mat-autocomplete>
-</mat-form-field>
+</mat-form-field> -->
+
+<form (ngSubmit)="searching()">
+  <input type="text" name="termino" [(ngModel)]="termino" (input)="search()">
+</form>

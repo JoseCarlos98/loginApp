@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserAuthenticate } from 'src/app/interfaces/user.interface';
 import { AuthService } from 'src/app/services/auth-services.service';
-import { DashboardService } from '../../services/dashboard.service';
+import { apiService } from '../../services/api.service';
 import { Branch } from '../../interfaces/branch.interface';
 import { Origin } from 'src/app/interfaces/origin.interface';
 
@@ -17,20 +17,22 @@ export class RegisterComponent implements OnInit {
 
   infoUser!: UserAuthenticate;
   body: object = {};
-  branchSelected:any
+  branchSelected: any
+  properties: string[] = [];
   branchs: Branch[] = [];
-  origins : Origin[] = [];
+  origins: Origin[] = [];
   optionSelected: Origin[] = []
   nameNoVacio: any = /^[a-z ,.'-]+$/i;
 
   form: FormGroup = this.fb.group({
-    branchId : ['',  Validators.required],
-    name     : ['', [Validators.required, Validators.pattern(this.nameNoVacio)]],
+    branchId: ['', Validators.required],
+    name: ['', [Validators.required, Validators.pattern(this.nameNoVacio)]],
   })
 
-  constructor(private authService: AuthService,
-              private fb: FormBuilder,
-              private dashboardService: DashboardService) { }
+  constructor(
+    private authService: AuthService,
+    private fb: FormBuilder,
+    private apiServices: apiService) { }
 
   ngOnInit(): void {
     this.infoUser = this.authService.infoUser;
@@ -38,31 +40,39 @@ export class RegisterComponent implements OnInit {
     this.getAllOrigins();
   }
 
-  // No hacer la validaciòn en el html y se vea mas limpio
-  validate(campo:string){
+  validate(campo: string) {
     return this.form.controls[campo].errors && this.form.controls[campo].touched;
   }
 
-  // Opcion seleccionada del buscador la recibe aqui
-  option(option:any){
-      this.optionSelected = [];
-      if (option.length > 0) {
-            this.optionSelected = option;
-            console.log(this.optionSelected);
-      }
+  search(termino: string) {
+    console.log('recibido', termino);
   }
 
-  getBranches(){
-    this.dashboardService.getBranches()
-        .subscribe(branchs => { this.branchs = branchs })
+
+  sugerencia(termino: string) {
+    console.log(termino);
+    this.properties = [
+      'name',
+    ];
+
+    const query = this.apiServices.getQuery(termino, this.properties)
+    this.apiServices.getSuggestion(query)
+      .subscribe(resp => {
+        console.log(resp);
+      })
   }
 
-  registerOrUpdate(){
+  getBranches() {
+    this.apiServices.getBranches()
+      .subscribe(branchs => { this.branchs = branchs })
+  }
+
+  registerOrUpdate() {
     const { name, branchId } = this.form.value;
     let idOrigin = '';
 
     this.body = {
-      branchId : branchId,
+      branchId: branchId,
       createdById: this.infoUser.user.id,
       name
     };
@@ -70,38 +80,36 @@ export class RegisterComponent implements OnInit {
     if (this.branchSelected) {
       idOrigin = this.branchSelected.id
     }
-    
-    this.dashboardService.registerOrigin(this.body, idOrigin)
-        .subscribe(resp=> {
-          this.getAllOrigins();
-          this.reset();
-        })
-        this.branchSelected.id = ''
+
+    this.apiServices.registerOrigin(this.body, idOrigin)
+      .subscribe(resp => {
+        this.getAllOrigins();
+        this.reset();
+      })
+
+    this.branchSelected.id = ''
   }
 
-   // Funcion para el boton eliminar y obtenga la informaciòn al actualizar
-   rowSelected(branch:Branch, option?:string){
+  editRow(branch: Branch, option?: string) {
     this.branchSelected = branch;
     if (option) {
       this.form.reset(branch);
     }
   }
 
-  getAllOrigins(){
-    this.dashboardService.getOrigins()
-    .subscribe(origins => {this.origins = origins;});
+  getAllOrigins() {
+    this.apiServices.getOrigins()
+      .subscribe(origins => {
+        this.origins = origins;
+      });
   }
 
-
-  reset(){
+  reset() {
     this.form.reset();
   }
 
-  delete(){
-    this.dashboardService.deleteOrigins(this.branchSelected.id!)
-        .subscribe(resp => { this.getAllOrigins()});
+  delete() {
+    this.apiServices.deleteOrigins(this.branchSelected.id!)
+      .subscribe(resp => { this.getAllOrigins() });
   }
-
-
-
 }

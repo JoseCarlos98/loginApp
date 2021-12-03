@@ -1,6 +1,8 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Subject } from 'rxjs';
+import { debounce, debounceTime } from 'rxjs/operators';
 import { Origin } from 'src/app/interfaces/origin.interface';
-import { DashboardService } from 'src/app/services/dashboard.service';
+import { apiService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-searcher',
@@ -10,32 +12,30 @@ import { DashboardService } from 'src/app/services/dashboard.service';
 })
 export class SearcherComponent implements OnInit {
 
-
-  termino: string  = '';
+  termino: string = '';
   suggestions: Origin[] = [];
-  @Output() optionSelected: EventEmitter<Origin[]> = new EventEmitter(); 
+  @Output() searchOrigin: EventEmitter<string> = new EventEmitter();
+  @Output() onDebounce: EventEmitter<string> = new EventEmitter();
+  debouncer: Subject<string> = new Subject();
 
-  constructor(private dashboard:DashboardService) { }
+  constructor(
+    private apiService: apiService
+  ) { }
 
   ngOnInit(): void {
+    this.debouncer
+      .pipe(debounceTime(300))
+      .subscribe(value => {
+        this.onDebounce.emit(value)
+      })
   }
 
-  searching(){
-    if (this.termino.trim().length == 0) {
-      this.optionSelected.emit([])
-    }else{
-      this.dashboard.getSuggestion(this.termino)
-      .subscribe(resp => {
-        this.suggestions = resp
-        this.optionSelected.emit(resp)
-      });
-    }
-
-   
+  searching() {
+    this.searchOrigin.emit(this.termino)
   }
 
-  // seleccion(origin:any){
-  //   this.optionSelected.emit(origin)
-  // }
+  search() {
+    this.debouncer.next(this.termino)
+  }
 
 }
