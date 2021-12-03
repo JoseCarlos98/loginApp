@@ -40,10 +40,8 @@ export class LoginComponent {
     this.authService.login(this.body)
       .subscribe(resp => {
         if (resp.userId) {
-          this.router.navigateByUrl('/dashboard')
-        } else {
-          console.log(resp);
-        }
+          this.router.navigateByUrl('/dashboard');
+        } 
       });
   }
 }

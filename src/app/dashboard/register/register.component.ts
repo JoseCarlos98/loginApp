@@ -6,7 +6,6 @@ import { apiService } from '../../services/api.service';
 import { Branch } from '../../interfaces/branch.interface';
 import { Origin } from 'src/app/interfaces/origin.interface';
 
-
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -19,9 +18,9 @@ export class RegisterComponent implements OnInit {
   body: object = {};
   branchSelected: any
   properties: string[] = [];
-  branchs: Branch[] = [];
-  origins: Origin[] = [];
-  optionSelected: Origin[] = []
+  branchs: any;
+  origins: any;
+  Suggestion: Origin[] = []
   nameNoVacio: any = /^[a-z ,.'-]+$/i;
 
   form: FormGroup = this.fb.group({
@@ -36,7 +35,7 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this.infoUser = this.authService.infoUser;
-    this.getBranches();
+    this.getAllBranches();
     this.getAllOrigins();
   }
 
@@ -45,26 +44,15 @@ export class RegisterComponent implements OnInit {
   }
 
   search(termino: string) {
-    console.log('recibido', termino);
-  }
-
-
-  sugerencia(termino: string) {
-    console.log(termino);
     this.properties = [
       'name',
     ];
 
     const query = this.apiServices.getQuery(termino, this.properties)
-    this.apiServices.getSuggestion(query)
+    this.apiServices.getSuggestion('Origins', query)
       .subscribe(resp => {
-        console.log(resp);
+        this.Suggestion = resp;
       })
-  }
-
-  getBranches() {
-    this.apiServices.getBranches()
-      .subscribe(branchs => { this.branchs = branchs })
   }
 
   registerOrUpdate() {
@@ -78,16 +66,15 @@ export class RegisterComponent implements OnInit {
     };
 
     if (this.branchSelected) {
-      idOrigin = this.branchSelected.id
+      idOrigin = this.branchSelected.id;
     }
 
-    this.apiServices.registerOrigin(this.body, idOrigin)
-      .subscribe(resp => {
+    this.apiServices.registerOrUpdate('Origins', this.body, idOrigin)
+      .subscribe(___ => {
         this.getAllOrigins();
         this.reset();
+        this.branchSelected.id = '';
       })
-
-    this.branchSelected.id = ''
   }
 
   editRow(branch: Branch, option?: string) {
@@ -97,19 +84,32 @@ export class RegisterComponent implements OnInit {
     }
   }
 
-  getAllOrigins() {
-    this.apiServices.getOrigins()
-      .subscribe(origins => {
-        this.origins = origins;
-      });
-  }
-
   reset() {
     this.form.reset();
   }
 
   delete() {
-    this.apiServices.deleteOrigins(this.branchSelected.id!)
-      .subscribe(resp => { this.getAllOrigins() });
+    this.apiServices.delete('Origins', this.branchSelected.id!)
+      .subscribe(___ => { this.getAllOrigins() });
   }
+
+  getAllOrigins() {
+
+    const filtes = {
+      include: ["branch"]
+    }
+
+    this.apiServices.getAll('Origins', filtes)
+      .subscribe(origins => {
+        this.origins = origins;
+      })
+  }
+
+  getAllBranches() {
+    this.apiServices.getAll('Branches')
+      .subscribe(branchs => {
+        this.branchs = branchs;
+      })
+  }
+
 }

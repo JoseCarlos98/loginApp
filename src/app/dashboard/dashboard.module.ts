@@ -8,7 +8,6 @@ import { RegisterComponent } from './register/register.component';
 import { MaterialModule } from '../material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DateFormatPipe } from './pipe/date-format.pipe';
-import { BranchPipe } from './pipe/branch.pipe';
 import { SearcherComponent } from './searcher/searcher.component';
 
 
@@ -17,7 +16,6 @@ import { SearcherComponent } from './searcher/searcher.component';
     DashboardComponent,
     RegisterComponent,
     DateFormatPipe,
-    BranchPipe,
     SearcherComponent
 
   ],

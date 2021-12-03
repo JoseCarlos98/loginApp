@@ -1,81 +1,80 @@
-
-
 <div class="row">
-    <div class="col-md-12">
-      <br><br>
-        <form [formGroup]="form"
-        (ngSubmit)="registerOrUpdate()">
+  <div class="col-md-12">
+    <br><br>
+    <form [formGroup]="form" (ngSubmit)="registerOrUpdate()">
+      <mat-form-field style="margin-right: 30px;" appearance="fill">
+        <mat-label>Name</mat-label>
+        <input matInput type="text" formControlName="name" minlength="1">
+        <span class="form-text text-danger" *ngIf="validate('name')">
+          Ingrese un nombre
+        </span>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Branch </mat-label>
+        <mat-select formControlName="branchId">
+          <mat-option *ngFor="let branch of branchs" [value]="branch.id">
+            {{branch.name}}
+          </mat-option>
 
-        <mat-form-field style="margin-right: 30px;" appearance="fill">
-              <mat-label>Name</mat-label>
-              <input matInput type="text" formControlName="name" minlength="1">
-              <span class="form-text text-danger" *ngIf="validate('name')">
-                Ingrese un nombre
-              </span>
-          </mat-form-field>
-          <mat-form-field appearance="fill">
-            <mat-label>Branch </mat-label>
-            <mat-select formControlName="branchId">
-              <mat-option *ngFor="let branch of branchs" [value]="branch.id" >
-                {{branch.name}}
-              </mat-option>
-            
-            </mat-select>
-            <span class="form-text text-danger" *ngIf="validate('branchId')">
-              Seleccióna una branch
-            </span>
-          </mat-form-field>
-      <button mat-raised-button class="ml-5" type="submit" [disabled]="form.invalid" >GUARDAR</button>
+        </mat-select>
+        <span class="form-text text-danger" *ngIf="validate('branchId')">
+          Seleccióna una branch
+        </span>
+      </mat-form-field>
+      <button mat-raised-button class="ml-5" type="submit" [disabled]="form.invalid">GUARDAR</button>
       <br><br><br><br>
     </form>
-    </div>
+  </div>
 </div>
-
 
 <div class="search">
-  <app-searcher  (onDebounce)="sugerencia( $event )"></app-searcher>
+  <app-searcher (onDebounce)="search( $event )"></app-searcher>
 </div>
 <hr>
-
+<h1 class="">An animated element</h1>
 <div class="row">
   <div class="col-md-12 overflow-auto">
-  <table class="table table-striped table-hover" data-sort-name="optionSelected" data-sort-order="desc">
-    <thead>
-      <tr>
-        <th scope="col">Nombre</th>
-        <th scope="col">Branch</th>
-        <th scope="col">Fecha de creación</th>
-      </tr>
-    </thead>
-    <tbody >
-      <tr *ngFor="let origin of (optionSelected.length > 0 ? optionSelected : origins )">
-        <td>{{origin.name}}</td>
-        <th >{{origin.branch ? origin.branch.name : ''}}</th>
-        <td>{{origin.createdAt | dateFormat}}</td>
-        <td><i class="bi bi-pencil-square icons" data-bs-toggle="modal" data-bs-target="#staticBackdrop1" (click)="editRow(origin, 'update')"></i></td>
-        <td><i class="bi bi-trash-fill icons"  data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="editRow(origin)"></i></td>
-      </tr>
-      <tr>
-    </tbody>
-  </table>
-</div>
+    <table class="table table-striped table-hover" data-sort-name="optionSelected" data-sort-order="desc">
+      <thead>
+        <tr>
+          <th scope="col">Nombre</th>
+          <th scope="col">Branch</th>
+          <th scope="col">Fecha de creación</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        <tr class="animate__animated animate__fadeIn" *ngFor="let origin of (Suggestion.length > 0 ? Suggestion : origins )">
+          <td>{{origin.name}}</td>
+          <th>{{origin.branch ? origin.branch.name : ''}}</th>
+          <td>{{origin.createdAt | dateFormat}}</td>
+          <td><i class="bi bi-pencil-square icons" data-bs-toggle="modal" data-bs-target="#staticBackdrop1"
+              (click)="editRow(origin, 'update')"></i></td>
+          <td><i class="bi bi-trash-fill icons" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+              (click)="editRow(origin)"></i></td>
+        </tr>
+        <tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 
 <!-- Modal Delete -->
-  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" >
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="staticBackdropLabel" >ELIMINAR</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body" *ngIf="branchSelected">
-          
-          ¿Seguro que quiere eliminar {{branchSelected.name | json}}?
-        </div>
-        <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="reset()" >CERRAR</button>
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">ELIMINAR</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" *ngIf="branchSelected">
+
+        ¿Seguro que quiere eliminar {{branchSelected.name | json}}?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="reset()">CERRAR</button>
         <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="delete()">ELIMINAR</button>
       </div>
     </div>
@@ -83,16 +82,16 @@
 </div>
 
 <!-- Modal Update -->
-<div class="modal fade" id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" >
+<div class="modal fade" id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel" >Actualizar</h5>
+        <h5 class="modal-title" id="staticBackdropLabel">Actualizar</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body" *ngIf="branchSelected">
-        <form [formGroup]="form"
-            (ngSubmit)="registerOrUpdate()">
+        <form [formGroup]="form" (ngSubmit)="registerOrUpdate()">
 
           <mat-form-field style="margin-right: 30px;" appearance="fill">
             <mat-label>Name</mat-label>
@@ -101,7 +100,7 @@
           <mat-form-field appearance="fill" style="z-index: 1;">
             <mat-label>Branch </mat-label>
             <mat-select formControlName="branchId">
-              <mat-option *ngFor="let branch of branchs" [value]="branch.id" >
+              <mat-option *ngFor="let branch of branchs" [value]="branch.id">
                 {{branch.name}}
               </mat-option>
             </mat-select>
@@ -111,11 +110,11 @@
           </mat-form-field>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="reset()">CERRAR</button>
-            <button mat-raised-button class="ml-5" type="submit" data-bs-dismiss="modal" [disabled]="form.invalid">GUARDAR</button>
-        </div>
+            <button mat-raised-button class="ml-5" type="submit" data-bs-dismiss="modal"
+              [disabled]="form.invalid">GUARDAR</button>
+          </div>
         </form>
       </div>
-     
+    </div>
   </div>
-</div>
 </div>
