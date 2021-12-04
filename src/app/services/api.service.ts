@@ -25,31 +25,17 @@ export class apiService {
 
   getAll(model: string, filters?: any) {
     const filter = `filter=${JSON.stringify(filters)}`
-    
     const url = `${this.apiBase}${model}?${filters ? filter : ''}&access_token=${this.infoUser.id}`;
-
     return this.http.get(url)
   }
 
   getQuery(termino: string, properties?: string[]) {
-    let where: any = {}
-
+    const or: any = [];
     properties!.forEach(element => {
-      where[element] = { like: termino, options: 'i' }
+      or.push({ [element]: { like: termino, options: 'i' } });
     });
 
-    return where
-  }
-
-  getSuggestion(model: string, query: Query): Observable<Origin[]> {
-    const filter = {
-      include: ["branch"],
-      where: query,
-      sort: "createdAt ASC"
-    }
-
-    const url = `${this.apiBase}${model}?filter=${JSON.stringify(filter)}&access_token=${this.infoUser.id}`
-    return this.http.get<Origin[]>(url)
+    return or;
   }
 
   registerOrUpdate(model: string, body?: object, idOrigin?: any) {

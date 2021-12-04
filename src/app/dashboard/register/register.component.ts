@@ -20,7 +20,7 @@ export class RegisterComponent implements OnInit {
   properties: string[] = [];
   branchs: any;
   origins: any;
-  Suggestion: Origin[] = []
+  Suggestion: any = []
   nameNoVacio: any = /^[a-z ,.'-]+$/i;
 
   form: FormGroup = this.fb.group({
@@ -44,12 +44,16 @@ export class RegisterComponent implements OnInit {
   }
 
   search(termino: string) {
-    this.properties = [
-      'name',
-    ];
+    const query = this.apiServices.getQuery(termino, ['name'])
+    const filter = {
+      include: ["branch"],
+      where: {
+        or: query
+      },
+      sort: "createdAt ASC"
+    }
 
-    const query = this.apiServices.getQuery(termino, this.properties)
-    this.apiServices.getSuggestion('Origins', query)
+    this.apiServices.getAll('Origins', filter)
       .subscribe(resp => {
         this.Suggestion = resp;
       })
@@ -70,7 +74,7 @@ export class RegisterComponent implements OnInit {
     }
 
     this.apiServices.registerOrUpdate('Origins', this.body, idOrigin)
-      .subscribe(___ => {
+      .subscribe(_ => {
         this.getAllOrigins();
         this.reset();
         this.branchSelected.id = '';
@@ -90,16 +94,12 @@ export class RegisterComponent implements OnInit {
 
   delete() {
     this.apiServices.delete('Origins', this.branchSelected.id!)
-      .subscribe(___ => { this.getAllOrigins() });
+      .subscribe(_ => { this.getAllOrigins() });
   }
 
   getAllOrigins() {
-
-    const filtes = {
-      include: ["branch"]
-    }
-
-    this.apiServices.getAll('Origins', filtes)
+    const filter = { include: ["branch"] };
+    this.apiServices.getAll('Origins', filter)
       .subscribe(origins => {
         this.origins = origins;
       })
