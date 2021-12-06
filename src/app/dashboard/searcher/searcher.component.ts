@@ -13,7 +13,6 @@ export class SearcherComponent implements OnInit {
 
   termino: string = '';
   suggestions: Origin[] = [];
-  @Output() searchOrigin: EventEmitter<string> = new EventEmitter();
   @Output() onDebounce: EventEmitter<string> = new EventEmitter();
   debouncer: Subject<string> = new Subject();
 
@@ -25,10 +24,6 @@ export class SearcherComponent implements OnInit {
       .subscribe(value => {
         this.onDebounce.emit(value);
       })
-  }
-
-  searching() {
-    this.searchOrigin.emit(this.termino);
   }
 
   search() {
